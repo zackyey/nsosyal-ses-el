@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+backend/uploads/*
+!backend/uploads/.gitkeep
+.DS_Store
+CLAUDE.md
+.claude/

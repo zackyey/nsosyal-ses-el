@@ -1,0 +1,86 @@
+<title>Text demo | NSosyal Ses-El</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" />
+<link rel="icon" type="image/svg+xml" href="images/sesel-icon.svg" />
+<link rel="stylesheet" href="css/style.css" />
+
+<header class="site-header">
+  <nav class="nav">
+    <a class="nav-brand" href="index.html"><img src="images/sesel-icon.svg" alt="" class="nav-brand-icon" /><span data-t="nav.brand">NSosyal</span> <span class="brand-suffix" data-t="nav.brandSuffix">Ses-El</span></a>
+    <div class="nav-links">
+      <a href="index.html" data-t="nav.home">Home</a>
+      <a href="demo.html" data-t="nav.demo">Text demo</a>
+      <a href="vocabulary.html" data-t="nav.vocabulary">Vocabulary</a>
+      <a href="about.html" data-t="nav.about">About & limits</a>
+      <span class="nav-sep">|</span>
+      <select id="locale-toggle" class="nav-locale" aria-label="Language">
+        <option value="tr">TR</option>
+        <option value="en">EN</option>
+      </select>
+      <button id="theme-toggle" class="nav-theme" type="button" aria-label="Toggle theme">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6" />
+          <path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="container">
+    <p class="eyebrow" data-t="demo.eyebrow"></p>
+    <h1 data-t="demo.title"></h1>
+    <p class="lede" data-t="demo.lede"></p>
+
+    <div class="field" style="max-width: 640px;">
+      <label for="demo-input" data-t="demo.inputLabel"></label>
+      <textarea id="demo-input" data-t-placeholder="demo.inputPlaceholder"></textarea>
+    </div>
+    <button class="btn btn-primary" id="demo-run" data-t="demo.runButton"></button>
+    <p class="faint" style="margin-top:12px;" data-t="demo.stemNote"></p>
+
+    <hr />
+
+    <p class="eyebrow" data-t="demo.signEyebrow"></p>
+    <div class="sign-stage" id="demo-sign-stage"></div>
+    <div class="timeline-scrub" id="demo-scrub" data-t="demo.idle"></div>
+
+    <section style="margin-top: 40px;">
+      <p class="eyebrow" data-t="demo.breakdownEyebrow"></p>
+      <table>
+        <thead>
+          <tr><th data-t="demo.tableWord"></th><th data-t="demo.tableResult"></th></tr>
+        </thead>
+        <tbody id="demo-breakdown"></tbody>
+      </table>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4 data-t="footer.productHeading"></h4>
+      <a href="index.html" data-t="footer.productUpload"></a>
+      <a href="demo.html" data-t="footer.productDemo"></a>
+      <a href="vocabulary.html" data-t="footer.productVocab"></a>
+    </div>
+    <div class="footer-col">
+      <h4 data-t="footer.projectHeading"></h4>
+      <a href="about.html" data-t="footer.projectAbout"></a>
+    </div>
+  </div>
+  <div class="footer-note">
+    <span data-t="footer.metaLine"></span>
+    <div style="margin-top:8px;" data-t="footer.note" data-t-html></div>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+<script src="js/match.js"></script>
+<script src="js/sign-avatar.js"></script>
+<script src="js/demo.js"></script>
