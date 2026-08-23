@@ -49,52 +49,33 @@ onContentReady(function (content) {
 
   const standaloneAvatar = createSignAvatar(document.getElementById("sign-stage-standalone"));
   const scrubEl = document.getElementById("scrub-standalone");
-  let standaloneTimer = null;
+  const standalonePlayer = createSequencePlayer(standaloneAvatar);
 
   function stopStandaloneSequence() {
-    if (standaloneTimer) {
-      clearTimeout(standaloneTimer);
-      standaloneTimer = null;
-    }
+    standalonePlayer.stop();
   }
 
   function playStandaloneSequence() {
-    stopStandaloneSequence();
-    if (timeline.length === 0) {
-      standaloneAvatar.idle();
-      scrubEl.textContent = t.scrubNoMatches;
-      return;
-    }
-    let idx = 0;
-    const HOLD_MS = 1100;
-    const GAP_MS = 350;
-
-    function step() {
-      if (idx >= timeline.length) {
-        standaloneAvatar.idle();
+    standalonePlayer.play(timeline, {
+      holdMs: 1100,
+      gapMs: 350,
+      loopDelayMs: 1800,
+      onStep: (entry, idx) => {
+        scrubEl.textContent = formatTemplate(t.scrubStep, {
+          index: idx + 1,
+          total: timeline.length,
+          text: entry.text,
+          start: entry.start.toFixed(1),
+          end: entry.end.toFixed(1),
+        });
+      },
+      onDone: () => {
         scrubEl.textContent = formatTemplate(t.scrubDone, { count: timeline.length });
-        standaloneTimer = setTimeout(() => {
-          idx = 0;
-          step();
-        }, 1800);
-        return;
-      }
-      const entry = timeline[idx];
-      standaloneAvatar.playGloss(entry.gloss, entry.text);
-      scrubEl.textContent = formatTemplate(t.scrubStep, {
-        index: idx + 1,
-        total: timeline.length,
-        text: entry.text,
-        start: entry.start.toFixed(1),
-        end: entry.end.toFixed(1),
-      });
-      idx += 1;
-      standaloneTimer = setTimeout(() => {
-        standaloneAvatar.idle();
-        standaloneTimer = setTimeout(step, GAP_MS);
-      }, HOLD_MS);
-    }
-    step();
+      },
+      onEmpty: () => {
+        scrubEl.textContent = t.scrubNoMatches;
+      },
+    });
   }
 
   playStandaloneSequence();

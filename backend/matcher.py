@@ -22,9 +22,24 @@ def build_stem_lookup(vocabulary):
     return lookup
 
 
+_cached_vocabulary = None
+_cached_lookup = None
+_cached_stem_lookup = None
+
+
+def _get_lookups(vocabulary):
+    # Stemming every single-word entry calls into Zeyrek, which is slow enough that
+    # rebuilding this from scratch on every request would add real per-request latency.
+    global _cached_vocabulary, _cached_lookup, _cached_stem_lookup
+    if vocabulary != _cached_vocabulary:
+        _cached_lookup = build_lookup(vocabulary)
+        _cached_stem_lookup = build_stem_lookup(vocabulary)
+        _cached_vocabulary = vocabulary
+    return _cached_lookup, _cached_stem_lookup
+
+
 def match_transcript(words, vocabulary):
-    lookup = build_lookup(vocabulary)
-    stem_lookup = build_stem_lookup(vocabulary)
+    lookup, stem_lookup = _get_lookups(vocabulary)
     normalized = [normalize_word(w["word"]) for w in words]
 
     timeline = []

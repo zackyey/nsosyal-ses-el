@@ -24,6 +24,6 @@ fetch("data/vocabulary.json")
   });
 
 filterInput.addEventListener("input", () => {
-  const q = filterInput.value.trim().toLowerCase();
-  render(q ? vocabulary.filter((e) => e.text.toLowerCase().includes(q) || e.gloss.toLowerCase().includes(q)) : vocabulary);
+  const q = filterInput.value.trim().toLocaleLowerCase("tr");
+  render(q ? vocabulary.filter((e) => e.text.toLocaleLowerCase("tr").includes(q) || e.gloss.toLocaleLowerCase("tr").includes(q)) : vocabulary);
 });

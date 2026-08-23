@@ -9,7 +9,7 @@ onContentReady(function (content) {
   input.value = t.inputDefault;
 
   let vocabulary = [];
-  let playTimer = null;
+  const player = createSequencePlayer(avatar);
 
   fetch("data/vocabulary.json")
     .then((r) => r.json())
@@ -21,41 +21,21 @@ onContentReady(function (content) {
       scrubEl.textContent = t.loadError;
     });
 
-  function stopPlayback() {
-    if (playTimer) {
-      clearTimeout(playTimer);
-      playTimer = null;
-    }
-  }
-
   function playTokens(tokens) {
-    stopPlayback();
     const matches = tokens.filter((tok) => tok.kind === "match");
-    if (matches.length === 0) {
-      avatar.idle();
-      scrubEl.textContent = t.noMatches;
-      return;
-    }
-    let idx = 0;
-    const HOLD_MS = 1000;
-    const GAP_MS = 300;
-
-    function step() {
-      if (idx >= matches.length) {
-        avatar.idle();
+    player.play(matches, {
+      holdMs: 1000,
+      gapMs: 300,
+      onStep: (m, idx) => {
+        scrubEl.textContent = formatTemplate(t.scrubStep, { index: idx + 1, total: matches.length, text: m.text });
+      },
+      onDone: () => {
         scrubEl.textContent = formatTemplate(t.scrubDone, { count: matches.length });
-        return;
-      }
-      const m = matches[idx];
-      avatar.playGloss(m.gloss, m.text);
-      scrubEl.textContent = formatTemplate(t.scrubStep, { index: idx + 1, total: matches.length, text: m.text });
-      idx += 1;
-      playTimer = setTimeout(() => {
-        avatar.idle();
-        playTimer = setTimeout(step, GAP_MS);
-      }, HOLD_MS);
-    }
-    step();
+      },
+      onEmpty: () => {
+        scrubEl.textContent = t.noMatches;
+      },
+    });
   }
 
   function run() {

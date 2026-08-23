@@ -11,6 +11,55 @@ function formatTemplate(str, vars) {
   return str.replace(/\{(\w+)\}/g, (_, k) => vars[k]);
 }
 
+// Steps through `items` one at a time on a hold/gap timer, driving `avatar` and
+// calling back into `onStep`/`onDone`/`onEmpty` for scrub-label text. Shared by
+// demo.js and results.js, which otherwise play near-identical sign sequences.
+function createSequencePlayer(avatar) {
+  let timer = null;
+
+  function stop() {
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
+  }
+
+  function play(items, { holdMs, gapMs, onStep, onDone, onEmpty, loopDelayMs }) {
+    stop();
+    if (items.length === 0) {
+      avatar.idle();
+      onEmpty();
+      return;
+    }
+    let idx = 0;
+
+    function step() {
+      if (idx >= items.length) {
+        avatar.idle();
+        onDone();
+        if (loopDelayMs != null) {
+          timer = setTimeout(() => {
+            idx = 0;
+            step();
+          }, loopDelayMs);
+        }
+        return;
+      }
+      const item = items[idx];
+      avatar.playGloss(item.gloss, item.text);
+      onStep(item, idx);
+      idx += 1;
+      timer = setTimeout(() => {
+        avatar.idle();
+        timer = setTimeout(step, gapMs);
+      }, holdMs);
+    }
+    step();
+  }
+
+  return { play, stop };
+}
+
 function currentLocale() {
   return localStorage.getItem(LOCALE_KEY) || "tr";
 }
