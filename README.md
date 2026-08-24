@@ -194,7 +194,7 @@ edges. If you're adding vocabulary, remember to update both
 
 ## License
 
-This project is licensed under the [MIT license](./LICENSE). It uses
+This project is licensed under the GNU Affero General Public License v3.0 (AGPLv3). It uses
 OpenAI's Whisper for local speech-to-text, ffmpeg (via Whisper) for audio
 decoding, and Zeyrek for Turkish stemming. Each comes with its own license;
 check those before reusing this code under a different license.
