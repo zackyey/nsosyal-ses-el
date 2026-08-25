@@ -1,9 +1,3 @@
-// Locks frontend/js/match.js behavior to the shared fixtures in
-// tests/fixtures/match-cases.json, so it can't silently drift from
-// backend/matcher.py + backend/normalize.py (checked by
-// tests/test-matcher-parity.py) without a test noticing. Run directly:
-//
-//   node tests/match-parity.js
 "use strict";
 
 const fs = require("fs");

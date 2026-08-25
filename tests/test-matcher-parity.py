@@ -1,13 +1,3 @@
-# Locks backend/matcher.py + backend/normalize.py behavior to the shared
-# fixtures in tests/fixtures/match-cases.json, so it can't silently drift
-# from frontend/js/match.js (checked by tests/match-parity.js) without a
-# test noticing. Run directly, not via unittest discovery:
-#
-#   python tests/test-matcher-parity.py
-#
-# The stemming case requires Zeyrek to be installed and working (see
-# backend/requirements.txt) and is skipped otherwise, since without it
-# there is no divergence to lock in.
 import json
 import sys
 import unittest
