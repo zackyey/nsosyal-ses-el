@@ -72,3 +72,8 @@ function matchText(text, vocabulary) {
 
   return { tokens, matchedWordCount, totalWordCount };
 }
+
+// Lets tests/match-parity.js `require()` this browser-loaded script under Node.
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { matchText };
+}

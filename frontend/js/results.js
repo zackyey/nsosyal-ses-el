@@ -86,19 +86,27 @@ onContentReady(function (content) {
     video.src = data.video_url;
   }
 
+  // timeupdate only fires every ~250ms, too coarse for signs shorter than
+  // that (e.g. a 160ms word) which could be skipped entirely; poll on
+  // requestAnimationFrame instead so short entries still get picked up.
   let activeIndex = -1;
-  video.addEventListener("timeupdate", () => {
-    const now = video.currentTime;
-    const idx = timeline.findIndex((e) => now >= e.start && now <= e.end);
-    if (idx !== activeIndex) {
-      activeIndex = idx;
-      if (idx === -1) {
-        pipAvatar.idle();
-      } else {
-        pipAvatar.playGloss(timeline[idx].gloss, timeline[idx].text);
+  function checkActiveEntry() {
+    if (!video.paused && !video.ended) {
+      const now = video.currentTime;
+      const idx = timeline.findIndex((e) => now >= e.start && now <= e.end);
+      if (idx !== activeIndex) {
+        activeIndex = idx;
+        if (idx === -1) {
+          pipAvatar.idle();
+        } else {
+          pipAvatar.playGloss(timeline[idx].gloss, timeline[idx].text);
+        }
       }
     }
-  });
+    requestAnimationFrame(checkActiveEntry);
+  }
+  requestAnimationFrame(checkActiveEntry);
+
   video.addEventListener("seeking", () => {
     activeIndex = -1;
     pipAvatar.idle();

@@ -1,0 +1,40 @@
+{
+  "vocabulary": [
+    { "sign_id": "merhaba", "text": "merhaba", "gloss": "MERHABA" },
+    { "sign_id": "hosgeldin", "text": "hoş geldin", "gloss": "HOŞGELDİN" },
+    { "sign_id": "ev", "text": "ev", "gloss": "EV" }
+  ],
+  "cases": [
+    {
+      "name": "exact_single_word_match",
+      "input": "merhaba",
+      "expected_python": { "matched": [{ "text": "merhaba", "sign_id": "merhaba", "gloss": "MERHABA" }], "matched_words": 1, "total_words": 1 },
+      "expected_js": { "matched": [{ "text": "merhaba", "sign_id": "merhaba", "gloss": "MERHABA" }], "matched_words": 1, "total_words": 1 }
+    },
+    {
+      "name": "greedy_phrase_match",
+      "input": "hoş geldin nasılsın",
+      "expected_python": { "matched": [{ "text": "hoş geldin", "sign_id": "hosgeldin", "gloss": "HOŞGELDİN" }], "matched_words": 2, "total_words": 3 },
+      "expected_js": { "matched": [{ "text": "hoş geldin", "sign_id": "hosgeldin", "gloss": "HOŞGELDİN" }], "matched_words": 2, "total_words": 3 }
+    },
+    {
+      "name": "case_and_punctuation_normalization",
+      "input": "Merhaba, MERHABA!",
+      "expected_python": { "matched": [{ "text": "merhaba", "sign_id": "merhaba", "gloss": "MERHABA" }, { "text": "merhaba", "sign_id": "merhaba", "gloss": "MERHABA" }], "matched_words": 2, "total_words": 2 },
+      "expected_js": { "matched": [{ "text": "merhaba", "sign_id": "merhaba", "gloss": "MERHABA" }, { "text": "merhaba", "sign_id": "merhaba", "gloss": "MERHABA" }], "matched_words": 2, "total_words": 2 }
+    },
+    {
+      "name": "no_matches_at_all",
+      "input": "kahve içelim",
+      "expected_python": { "matched": [], "matched_words": 0, "total_words": 2 },
+      "expected_js": { "matched": [], "matched_words": 0, "total_words": 2 }
+    },
+    {
+      "name": "stemmed_word_documented_gap",
+      "requires_stemming": true,
+      "input": "evden geliyorum",
+      "expected_python": { "matched": [{ "text": "evden", "sign_id": "ev", "gloss": "EV" }], "matched_words": 1, "total_words": 2 },
+      "expected_js": { "matched": [], "matched_words": 0, "total_words": 2 }
+    }
+  ]
+}
